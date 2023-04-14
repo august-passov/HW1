@@ -141,7 +141,7 @@ CREATE TABLE movie (
     studio_name TEXT
 );
 
-CREATE TABLE actor (
+CREATE TABLE actors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     movie_title TEXT,
     actor_name TEXT,
@@ -154,7 +154,7 @@ VALUES ( "Batman Begins", 2005, "PG-13", "Warner Bros."),
        ( "The Dark Knight", 2008, "PG-13", "Warner Bros."),
        ( "The Dark Knight Rises", 2012, "PG-13", "Warner Bros.");
 
-INSERT INTO actor ( movie_title, actor_name, character_name, movie_id)
+INSERT INTO actors ( movie_title, actor_name, character_name, movie_id)
 VALUES ( "Batman Begins", "Christian Bale", "Bruce Wayne", 1),
        ( "Batman Begins", "Michael Caine", "Alfred", 1),
        ( "Batman Begins", "Liam Neeson", "Ra's Al Ghul", 1),
@@ -172,5 +172,5 @@ VALUES ( "Batman Begins", "Christian Bale", "Bruce Wayne", 1),
        ( "The Dark Knight Rises", "Anne Hathaway", "Selina Kyle", 3);
 
 
-SELECT * FROM movie;
-SELECT * FROM actor;
+SELECT movie.release_year, movie.rating, actor.movie_title
+FROM actor INNER JOIN movie ON movie.title = actor.movie_title; 
