@@ -113,6 +113,9 @@
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
 
+-- The SQL statement for the cast output
+-- TODO!
+
 -- Prints a header for the movies output
 .print "Movies"
 .print "======"
@@ -127,6 +130,47 @@
 .print "========"
 .print ""
 
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS actor;
 
--- The SQL statement for the cast output
--- TODO!
+CREATE TABLE movie (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    release_year INTEGER,
+    rating TEXT,
+    studio_name TEXT
+);
+
+CREATE TABLE actor (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    movie_title TEXT,
+    actor_name TEXT,
+    character_name TEXT,
+    movie_id INTEGER
+);
+
+INSERT INTO movie ( title, release_year, rating, studio_name) 
+VALUES ( "Batman Begins", 2005, "PG-13", "Warner Bros."),
+       ( "The Dark Knight", 2008, "PG-13", "Warner Bros."),
+       ( "The Dark Knight Rises", 2012, "PG-13", "Warner Bros.");
+
+INSERT INTO actor ( movie_title, actor_name, character_name, movie_id)
+VALUES ( "Batman Begins", "Christian Bale", "Bruce Wayne", 1),
+       ( "Batman Begins", "Michael Caine", "Alfred", 1),
+       ( "Batman Begins", "Liam Neeson", "Ra's Al Ghul", 1),
+       ( "Batman Begins", "Katie Holmes", "Rachel Dawes", 1),
+       ( "Batman Begins", "Gary Oldman", "Commissioner Gordon", 1),
+       ( "The Dark Knight", "Christian Bale", "Bruce Wayne", 2),
+       ( "The Dark Knight", "Heath Ledger", "Joker", 2),
+       ( "The Dark Knight", "Aaron Eckhart", "Harvey Dent", 2),
+       ( "The Dark Knight", "Michael Caine", "Alfred", 2),
+       ( "The Dark Knight", "Maggie Gyllenhaal", "Rachel Dawes", 2),
+       ( "The Dark Knight Rises", "Christian Bale", "Bruce Wayne", 3),
+       ( "The Dark Knight Rises", "Gary Oldman", "Commissioner Gordon", 3),
+       ( "The Dark Knight Rises", "Tom Hardy", "Bane", 3),
+       ( "The Dark Knight Rises", "Joseph Gordon-Levitt", "John Blake", 3),
+       ( "The Dark Knight Rises", "Anne Hathaway", "Selina Kyle", 3);
+
+
+SELECT * FROM movie;
+SELECT * FROM actor;
