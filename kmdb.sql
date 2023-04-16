@@ -11,7 +11,7 @@
 --   and studio.
 -- - There are many studios, and each studio produces many movies, but
 --   a movie belongs to a single studio.
--- - An actor can be in multiple movies.
+-- -studio can be in multiple movies.
 -- - Everything you need to do in this assignment is marked with TODO!
 
 -- User stories
@@ -19,9 +19,9 @@
 -- - As a guest, I want to see a list of movies with the title, year released,
 --   MPAA rating, and studio information.
 -- - As a guest, I want to see the movies which a single studio has produced.
--- - As a guest, I want to see each movie's cast including each actor's
+-- - As a guest, I want to see each movie's cast including estudio's
 --   name and the name of the character they portray.
--- - As a guest, I want to see the movies which a single actor has acted in.
+-- - As a guest, I want to see the movies which a sinstudio has acted in.
 -- * Note: The "guest" user role represents the experience prior to logging-in
 --   to an app and typically does not have a corresponding database table.
 
@@ -48,7 +48,7 @@
 --   Hint #2: Do NOT name one of your models/tables “cast” or “casts”; this 
 --   is a reserved word in sqlite and will break your database! Instead, 
 --   think of a better word to describe this concept; i.e. the relationship 
---   between an actor and the movie in which they play a part.
+--   betweenstudio and the movie in which they play a part.
 -- 2. Execution of the domain model (CREATE TABLE) - 4 points
 -- - Follow best practices for table and column names
 -- - Use correct data column types (i.e. TEXT/INTEGER)
@@ -105,16 +105,58 @@
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
 -- TODO!
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS studio;
 
 -- Create new tables, according to your domain model
 -- TODO!
+CREATE TABLE movie (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    release_year INTEGER,
+    rating TEXT,
+    studio_id INTEGER
+);
 
+CREATE TABLE studio (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    studio_name TEXT
+);
+
+CREATE TABLE actors (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor_name TEXT,
+    character_name TEXT,
+    movie_id INTEGER
+);
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+INSERT INTO movie ( title, release_year, rating, studio_id) 
+VALUES ( "Batman Begins", 2005, "PG-13", 1),
+       ( "The Dark Knight", 2008, "PG-13", 1),
+       ( "The Dark Knight Rises", 2012, "PG-13", 1);
 
--- The SQL statement for the cast output
--- TODO!
+INSERT INTO studio (studio_name)
+VALUES ("Warner Bros");
+
+INSERT INTO actors ( actor_name, character_name, movie_id)
+VALUES ( "Christian Bale", "Bruce Wayne", 1),
+       ( "Michael Caine", "Alfred", 1),
+       ( "Liam Neeson", "Ra's Al Ghul", 1),
+       ( "Katie Holmes", "Rachel Dawes", 1),
+       ( "Gary Oldman", "Commissioner Gordon", 1),
+       ( "Christian Bale", "Bruce Wayne", 2),
+       ( "Heath Ledger", "Joker", 2),
+       ( "Aaron Eckhart", "Harvey Dent", 2),
+       ( "Michael Caine", "Alfred", 2),
+       ( "Maggie Gyllenhaal", "Rachel Dawes", 2),
+       ( "Christian Bale", "Bruce Wayne", 3),
+       ( "Gary Oldman", "Commissioner Gordon", 3),
+       ( "Tom Hardy", "Bane", 3),
+       ( "Joseph Gordon-Levitt", "John Blake", 3),
+       ( "Anne Hathaway", "Selina Kyle", 3);
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -123,6 +165,8 @@
 
 -- The SQL statement for the movies output
 -- TODO!
+SELECT movie.title, movie.release_year, movie.rating, studio_name
+FROM studio INNER JOIN movie ON movie.studio_id = studio.id; 
 
 -- Prints a header for the cast output
 .print ""
@@ -130,47 +174,7 @@
 .print "========"
 .print ""
 
-DROP TABLE IF EXISTS movie;
-DROP TABLE IF EXISTS actor;
-
-CREATE TABLE movie (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
-    release_year INTEGER,
-    rating TEXT,
-    studio_name TEXT
-);
-
-CREATE TABLE actors (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    movie_title TEXT,
-    actor_name TEXT,
-    character_name TEXT,
-    movie_id INTEGER
-);
-
-INSERT INTO movie ( title, release_year, rating, studio_name) 
-VALUES ( "Batman Begins", 2005, "PG-13", "Warner Bros."),
-       ( "The Dark Knight", 2008, "PG-13", "Warner Bros."),
-       ( "The Dark Knight Rises", 2012, "PG-13", "Warner Bros.");
-
-INSERT INTO actors ( movie_title, actor_name, character_name, movie_id)
-VALUES ( "Batman Begins", "Christian Bale", "Bruce Wayne", 1),
-       ( "Batman Begins", "Michael Caine", "Alfred", 1),
-       ( "Batman Begins", "Liam Neeson", "Ra's Al Ghul", 1),
-       ( "Batman Begins", "Katie Holmes", "Rachel Dawes", 1),
-       ( "Batman Begins", "Gary Oldman", "Commissioner Gordon", 1),
-       ( "The Dark Knight", "Christian Bale", "Bruce Wayne", 2),
-       ( "The Dark Knight", "Heath Ledger", "Joker", 2),
-       ( "The Dark Knight", "Aaron Eckhart", "Harvey Dent", 2),
-       ( "The Dark Knight", "Michael Caine", "Alfred", 2),
-       ( "The Dark Knight", "Maggie Gyllenhaal", "Rachel Dawes", 2),
-       ( "The Dark Knight Rises", "Christian Bale", "Bruce Wayne", 3),
-       ( "The Dark Knight Rises", "Gary Oldman", "Commissioner Gordon", 3),
-       ( "The Dark Knight Rises", "Tom Hardy", "Bane", 3),
-       ( "The Dark Knight Rises", "Joseph Gordon-Levitt", "John Blake", 3),
-       ( "The Dark Knight Rises", "Anne Hathaway", "Selina Kyle", 3);
-
-
-SELECT movie.release_year, movie.rating, actor.movie_title
-FROM actor INNER JOIN movie ON movie.title = actor.movie_title; 
+-- The SQL statement for the cast output
+-- TODO!
+SELECT movie.title, actors.actor_name, actors.character_name
+FROM movie INNER JOIN actors ON movie.id = actors.movie_id;
